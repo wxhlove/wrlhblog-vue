@@ -53,7 +53,7 @@
                         this.postKeyValueRequest('/dologin', this.loginForm).then(resp => {
                             if (resp) {
                                 //登录成功存储用户信息
-                                window.sessionStorage.setItem("blogUser",JSON.stringify(resp.data))
+                                window.sessionStorage.setItem("blogUser", JSON.stringify(resp.data))
                                 this.$router.replace("/")
                                 // this.$router.replace((path == '/' || path == undefined) ? "/home" : path)
                             }
@@ -74,7 +74,9 @@
         background: #fff;
         margin: 230px auto;
         padding: 15px 30px 20px 20px;
-        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        text-align: center;
+
         /*box-shadow: 0 0 25px #cac6c6; !*添加阴影 ，X轴偏移 y轴偏移 ， 模糊半径 ，阴影颜色*!*/
     }
 

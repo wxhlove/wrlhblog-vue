@@ -1,12 +1,12 @@
 <template>
     <div>
-        <el-tag type="primary">我是首页</el-tag>
+        <h1>系统管理</h1>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Home"
+        name: "SystemEdit"
     }
 </script>
 

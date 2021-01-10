@@ -7,13 +7,12 @@ import en from "element-ui/src/locale/lang/en";
 //响应信息拦截器
 axios.interceptors.response.use(success => {
 //成功时的拦截器
-//     console.log("success=> " + JSON.stringify(success))
-    if (success && success.status == 200 && success.data.code == 500) {
+    if (success && success.status === 200 && success.data.code === 500) {
         //表示成功返回。但是返回的是自定义过得错误信息
         Message.error({message: success.data.message})
         return ;
     }
-    if (success && success.status == 200 && success.data.code == 200) {
+    if (success && success.status === 200 && success.data.code === 200) {
         //表示成功返回，并且返回的是自定成功的信息
         Message.success({message: success.data.message})
     }
@@ -21,14 +20,14 @@ axios.interceptors.response.use(success => {
     return success.data;
 }, error => {
     //服务异常类的错误
-    if (error.response.status == 504 || error.response.status == 404) {
+    if (error.response.status === 504 || error.response.status === 404) {
         Message.error({message: "服务器开小差了！"})
-    } else if (error.response.status == 403) {
+    } else if (error.response.status === 403) {
         Message.error({message: "权限不足，请联系管理员！"})
-    } else if (error.response.status == 401) {
+    } else if (error.response.status === 401) {
         Message.error({message: "尚未登录，请登录！"})
         //跳转登录页
-        router.replace("/")
+        router.replace("/login")
     } else {
         //其他情况的异常信息
         if (error.response.data.message) {
