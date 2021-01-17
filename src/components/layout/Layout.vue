@@ -38,7 +38,6 @@
         left: 0px;
         bottom: 0px;
         text-align: left;
-        background-color:#2F4156;
         overflow-y: auto;
     }
 
