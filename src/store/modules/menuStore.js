@@ -5,7 +5,8 @@ const menuStore = {
         routes: [], //菜单路由数组
         collapse: sessionStorage.getItem("menuCollapse") ? JSON.parse(sessionStorage.getItem("menuCollapse")) : {
             isCollapse: false,
-            headerRight: 'el-icon-s-fold',
+            headerRight: 'fa fa-outdent',
+            // headerRight: 'el-icon-s-fold',
             width: 200
         }
     },
@@ -18,7 +19,7 @@ const menuStore = {
         MENU_COLLAPSE(state, boolean) {
             state.collapse.isCollapse = boolean;
             state.collapse.width = boolean ? 60 : 200
-            state.collapse.headerRight = boolean ? 'el-icon-s-unfold' : 'el-icon-s-fold'
+            state.collapse.headerRight = boolean ? 'fa fa-indent' : 'fa fa-outdent'
             sessionStorage.setItem("menuCollapse", JSON.stringify(state.collapse))
         }
     },

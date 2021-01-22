@@ -5,19 +5,24 @@ import store from './store'
 import VueBus from 'vue-bus';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import {postKeyValueRequest} from './utils/api'
+import 'font-awesome/css/font-awesome.min.css'
+import moment from "moment";
 
+import {postKeyValueRequest} from './utils/api'
 import {postRequest} from './utils/api'
 import {putRequest} from './utils/api'
 import {deleteRequest} from './utils/api'
 import {getRequest} from './utils/api'
 import {initMenu} from "./utils/routesMenu";
+import {postImageUpload} from "./utils/api";
 
 Vue.prototype.postKeyValueRequest = postKeyValueRequest
 Vue.prototype.postRequest = postRequest
 Vue.prototype.putRequest = putRequest
 Vue.prototype.deleteRequest = deleteRequest
 Vue.prototype.getRequest = getRequest
+Vue.prototype.postImageUpload = postImageUpload
+
 Vue.use(VueBus);
 
 Vue.use(ElementUI);

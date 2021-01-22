@@ -2,7 +2,8 @@
     <div class="header" :style="{ left:collapse.width+'px'}">
         <div class="header-up">
             <div>
-                <i :class="collapse.headerRight" style="font-size: 25px;" @click="headerToRight"></i>
+                <i :class="collapse.headerRight" style="font-size: 22px; -webkit-text-stroke: 1px white;"
+                   @click="headerToRight"></i>
             </div>
             <div>
                 <el-dropdown trigger="click" @command="handleCommand">

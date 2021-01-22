@@ -47,7 +47,6 @@
         top: 80px;
         right: 0px;
         bottom: 0px;
-        padding: 10px;
         overflow-y: auto;
     }
 </style>

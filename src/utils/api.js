@@ -88,4 +88,14 @@ export const getRequest = (url, param) => {
         url: `${base}${url}`,
         data: param
     })
+};
+
+//实现图片上传
+export const postImageUpload=(url ,param)=>{
+    return axios({
+        method: 'post',
+        url: `${base}${url}`,
+        data: param,
+        headers: { 'Content-Type': 'multipart/form-data' },
+    })
 }

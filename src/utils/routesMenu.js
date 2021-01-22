@@ -27,7 +27,7 @@ const menuFormart = menus => {
                 iconCls: router.iconCls,
                 component(resolve) {
                     if (pathBoolean) {
-                        require(["../views/"+router.componentDir+"/"+router.component+".vue"], resolve)
+                        require(["../components/"+router.componentDir+"/"+router.component+".vue"], resolve)
                     } else {
                         require(["../components/layout/" + router.component + ".vue"], resolve)
                     }

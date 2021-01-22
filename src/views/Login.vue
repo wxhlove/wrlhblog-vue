@@ -2,13 +2,15 @@
     <div>
         <div class="loginForm">
             <div>
-                <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
+                <el-form :model="loginForm" :rules="rules" ref="loginForm">
                     <h3 class="loginTitle">系统登录</h3>
-                    <el-form-item size="small" label="用户名：" prop="username">
-                        <el-input size="small" placeholder="请输入用户名" v-model="loginForm.username"></el-input>
+                    <el-form-item size="small" prop="username">
+                        <el-input prefix-icon="el-icon-user" size="small" placeholder="请输入用户名"
+                                  v-model="loginForm.username"></el-input>
                     </el-form-item>
-                    <el-form-item size="small" label="密码：" prop="password">
-                        <el-input size="small" placeholder="请输入密码" v-model="loginForm.password"
+                    <el-form-item size="small" prop="password">
+                        <el-input prefix-icon="el-icon-key" size="small" placeholder="请输入密码"
+                                  v-model="loginForm.password"
                                   type="password" @keydown.enter.native="login"></el-input>
                     </el-form-item>
                 </el-form>
@@ -67,7 +69,7 @@
 
 <style>
     .loginForm {
-        width: 350px;
+        width: 300px;
         border: 1px solid #eaeaea;
         border-radius: 15px;
         background-clip: padding-box;

@@ -1,15 +1,16 @@
 <template>
     <div>
-        <h1>文章编辑</h1>
+        <h1>文章分类</h1>
     </div>
 </template>
 
 <script>
+    //文章分类
     export default {
-        name: "ArticleEdit"
+        name: "articleSort"
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>
