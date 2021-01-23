@@ -6,17 +6,12 @@
                 <el-col :span="18">
                     <el-form size="mini">
                         <el-row>
-                            <el-col :span="6">
+                            <el-col :span="8">
                                 <el-form-item label="标签名称:">
                                     <el-input placeholder="请输入标签名称..." style="width: 60%"></el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="6">
-                                <el-form-item label="添加人姓名:">
-                                    <el-input placeholder="请输入添加人姓名..." style="width: 60%;"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="6">
+                            <el-col :span="8">
                                 <el-form-item label="添加时间段:">
                                     <el-date-picker
                                             v-model="value2"
@@ -30,7 +25,7 @@
                                     </el-date-picker>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="6">
+                            <el-col :span="8">
                                 <el-button icon="el-icon-search" type="primary" size="mini">开始搜索</el-button>
                             </el-col>
                         </el-row>
@@ -72,7 +67,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="addUsername"
-                        label="添加人姓名"
+                        label="添加人用户名"
                         width="200">
                 </el-table-column>
                 <el-table-column

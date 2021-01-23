@@ -67,12 +67,12 @@
 
                 rules: {
                     name: [
-                        {required: true, message: '请输入活动名称', trigger: 'blur'},
+                        {required: true, message: '请输入标签名称', trigger: 'blur'},
                         {min: 3, max: 5, message: '长度在 3 到 10 个字符', trigger: 'blur'}
                     ],
                     descripation: [
-                        {required: true, message: '请输入描述内容', trigger: 'blur'},
-                        {min: 1, max: 30, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+                        {required: true, message: '请输入标签描述说明', trigger: 'blur'},
+                        {min: 3, max: 30, message: '长度在 3 到 10 个字符', trigger: 'blur'}
                     ]
                 }
 
@@ -94,7 +94,17 @@
             //关闭窗口时将数据专递给父组件
             dialog: function (val) {
                 if (!val) {
-                    this.$emit("change—dialog", val)
+                    this.$emit("change—dialog", val);
+                    this.nameStyleColor = val;
+                    this.label = {
+                        name: '',
+                        nameStyleColor: '#909399',
+                        nameColor: {
+                            borderColor: '#909399',
+                            color: '#909399'
+                        },
+                        descripation: ''  //描述
+                    }
                 }
             },
             //监听标签样式的颜色改变时
@@ -122,9 +132,6 @@
                         this.postRequest("/lable/", this.lable).then(resp => {
                             if (resp) {
                                 this.dialog = false
-                                //重置表单
-                                this.lable.nameStyleColor = '#909399'
-                                this.$refs["lableForm"].resetFields();
                                 //刷新lables 列表
                                 this.$emit("update-initLables")
                                 this.$message.success(resp.message)
