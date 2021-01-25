@@ -12,7 +12,8 @@
                  label-width="85px"
                  style="width:70%;">
             <el-form-item label="标签名称:" prop="name">
-                <el-input v-model="lable.name" placeholder="请输入标签名称..." style="width: 100%;"></el-input>
+                <el-input v-model="lable.name" placeholder="请输入标签名称..." :disabled="editTitle !== '添加标签'"
+                          style="width: 100%;"  :clearable="true"></el-input>
             </el-form-item>
             <el-form-item label="样式预览:">
                 <div style="display: flex ; justify-content: flex-start ; width: 100%;">
@@ -26,8 +27,13 @@
                 </div>
             </el-form-item>
             <el-form-item label="描述:" prop="descripation">
-                <el-input v-model="lable.descripation" type="textarea" placeholder="请输入标签描述..."
-                          style="width: 100%;"></el-input>
+                <el-input v-model="lable.descripation"
+                          type="textarea"
+                          rows="3"
+                          placeholder="请输入标签描述..."
+                          style="width: 100%;"
+                          maxlength="30"
+                          show-word-limit></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -50,12 +56,15 @@
             }
         },
         data() {
+            var chackLableName = (rule, value, callback) => {
+                this.chackLableNameAjax(rule, value, callback);
+            };
             return {
                 dialog: false,   //开启或关闭编辑页面
                 editTitle: '',   //编辑页title
                 nameStyleColor: '#909399',   //样式颜色
-
                 lable: {
+                    id: '',
                     name: '',
                     nameStyleColor: '#909399',
                     nameColor: {
@@ -68,16 +77,16 @@
                 rules: {
                     name: [
                         {required: true, message: '请输入标签名称', trigger: 'blur'},
-                        {min: 3, max: 5, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+                        {min: 3, max: 5, message: '长度在 3 到 10 个字符', trigger: 'blur'},
+                        {validator: chackLableName, trigger: "blur"}
+
                     ],
                     descripation: [
                         {required: true, message: '请输入标签描述说明', trigger: 'blur'},
                         {min: 3, max: 30, message: '长度在 3 到 10 个字符', trigger: 'blur'}
                     ]
                 }
-
             }
-
         },
         watch: {
             //获取父组件数据并更改当前组件数据
@@ -88,15 +97,18 @@
                     this.dialog = val.dialogFormVisible
                     //设置编辑窗口title
                     this.editTitle = val.editTitle
+                    if (val.lable.id && this.dialog) {
+                        this.lable = JSON.parse(JSON.stringify(val.lable))
+                        this.nameStyleColor = this.lable.nameStyleColor
+                    }
                 }
             },
-
             //关闭窗口时将数据专递给父组件
-            dialog: function (val) {
+            dialog(val) {
                 if (!val) {
                     this.$emit("change—dialog", val);
-                    this.nameStyleColor = val;
-                    this.label = {
+                    this.nameStyleColor = '#909399';
+                    this.lable = {
                         name: '',
                         nameStyleColor: '#909399',
                         nameColor: {
@@ -124,6 +136,25 @@
                 }
 
             },
+            //异步检查添加的是否重名
+            chackLableNameAjax(rule, value, callback) {
+                if (this.editTitle === '添加标签' && value !== '') {
+                    this.getRequest(`/lable/check/${value}`).then(resp => {
+                        if (resp) {
+                            //存在相同的分类名称
+                            callback(new Error("输入的标签名称已存在"));
+                        } else {
+                            callback();
+                        }
+                    }).catch(error => {
+                        this.$message.error(error.response.message)
+                    })
+                } else {
+                    //false 表示这一步可以不做校验
+                    callback();
+                }
+            },
+
             //添加标签
             addLable() {
 
@@ -136,9 +167,8 @@
                                 this.$emit("update-initLables")
                                 this.$message.success(resp.message)
                             }
-
                         }).catch(error => {
-                            console.log("error ==> " + error)
+                            console.log("error ==> " + JSON.stringify(error))
                         })
 
                     }
@@ -146,10 +176,17 @@
             },
             //更新标签
             updateLable() {
-
+                this.putRequest("/lable/", this.lable).then(resp => {
+                    if (resp) {
+                        this.dialog = false
+                        //刷新lables 列表
+                        this.$emit("update-initLables")
+                        this.$message.success(resp.message)
+                    }
+                }).catch(error => {
+                    this.$message.error(error.response.message)
+                })
             }
-
-
         }
     }
 </script>

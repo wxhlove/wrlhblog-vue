@@ -7,14 +7,17 @@
         <!--  表单内容-->
         <el-form
                 :model="sort"
-                rules="rules"
+                :rules="rules"
                 ref="sortForm"
                 size="small"
                 label-width="85px"
                 style="width:70%;"
                 :hide-required-asterisk='true'>
             <el-form-item label="分类名称:" prop="name">
-                <el-input style="width: 100%" v-model="sort.name" placeholder="请输入分类名称"></el-input>
+                <el-input style="width: 100%" v-model="sort.name" placeholder="请输入分类名称"
+                          :disabled="editTitle !== '添加分类'"
+                          :clearable="true">
+                </el-input>
             </el-form-item>
             <el-form-item label="样式预览:">
                 <div style="display: flex;justify-content: flex-start; width: 100%">
@@ -28,7 +31,14 @@
                 </div>
             </el-form-item>
             <el-form-item label="描述:" prop="descripation">
-                <el-input style="width: 100%" v-model="sort.descripation" placeholder="请输入分类描述..."></el-input>
+                <el-input
+                        style="width: 100%"
+                        type="textarea"
+                        rows="3"
+                        v-model="sort.descripation"
+                        placeholder="请输入分类描述..."
+                        maxlength="30"
+                        show-word-limit></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -52,11 +62,16 @@
             }
         },
         data() {
+            //校验添加的分类名称是否重名
+            var chackSortName = (rule, value, callback) => {
+                this.chackSortNameAjax(rule, value, callback);
+            };
             return {
                 dialog: false,
                 editTitle: '',
                 nameStyleColor: '#909399',   //样式颜色
                 sort: {
+                    id: '',
                     name: '',
                     nameStyleColor: '#909399',
                     nameColor: {
@@ -68,7 +83,8 @@
                 rules: {
                     name: [
                         {require: true, message: '请输入分类名称', target: blur},
-                        {min: 3, max: 10, message: "长度在3到5个字符之间", target: blur}
+                        {min: 3, max: 10, message: "长度在3到5个字符之间", target: blur},
+                        {validator: chackSortName, trigger: "blur"}
                     ],
                     descripation: [
                         {require: true, message: '请输入分类描述说明', target: blur},
@@ -86,6 +102,10 @@
                     this.dialog = val.dialogVisible
                     //更新title
                     this.editTitle = val.editTitle
+                    if (val.sort.id && this.dialog) {
+                        this.sort = JSON.parse(JSON.stringify(val.sort))
+                        this.nameStyleColor = val.sort.nameStyleColor
+                    }
                 }
             },
             //检测到开启编辑页的变化后更新到父组件,并还原编辑页内容
@@ -120,9 +140,27 @@
                     this.updateSort()
                 }
             },
+
+            //异步检查添加的是否重名
+            chackSortNameAjax(rule, value, callback) {
+                if (this.editTitle === '添加分类' && value !== '') {
+                    this.getRequest(`/sort/check/${value}`).then(resp => {
+                        if (resp) {
+                            //存在相同的分类名称
+                            callback(new Error("输入的分类名称已存在"));
+                        } else {
+                            callback();
+                        }
+                    }).catch(error => {
+                        this.$message.error(error.response.message)
+                    })
+                } else {
+                    //false 表示这一步可以不做校验
+                    callback();
+                }
+            },
             //添加分类
             addSort() {
-
                 this.$refs["sortForm"].validate(valid => {
                     if (valid) {
                         this.postRequest("/sort/", this.sort).then(resp => {
@@ -138,10 +176,15 @@
             },
             //更新分类
             updateSort() {
-
+                this.putRequest("/sort/", this.sort).then(resp => {
+                    if (resp) {
+                        this.dialog = false
+                        this.$emit("update-initSorts")
+                    }
+                }).catch(error => {
+                    this.$message.error(error.response.message)
+                })
             }
-
-
         }
     }
 </script>

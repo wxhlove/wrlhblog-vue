@@ -32,6 +32,7 @@
                                             v-model="articleTitle.piblishTime"
                                             type="date"
                                             placeholder="选择日期"
+                                            :picker-options="pickerOptions"
                                             style="width: 70%">
                                     </el-date-picker>
                                 </el-form-item>
@@ -88,6 +89,11 @@
                     summary: '', //总结
                     imageUrl: '' //总结背景图片
                 },
+                pickerOptions: { //对预发布时间进行限制
+                    disabledDate(time) {
+                        return time.getTime() < Date.now()
+                    }
+                },
 
 
                 options: [{
@@ -109,7 +115,8 @@
                 value: '',
                 value1: ''
             }
-        }
+        },
+        methods: {}
     }
 </script>
 
