@@ -1,26 +1,12 @@
 <template>
     <div style="padding: 10px">
-        <!--        <div>-->
-        <!--            <el-radio-group v-model="lableOrSort">-->
-        <!--                <el-radio-button label="分类管理" style="margin-right: 20px"></el-radio-button>-->
-        <!--                <el-radio-button label="标签管理"></el-radio-button>-->
-        <!--            </el-radio-group>-->
-        <!--        </div>-->
-        <!--        <div style="margin-top: 10px">-->
-        <!--            <div>-->
-
-        <!--            </div>-->
-        <!--            <div style="margin-top: 10px">-->
-        <!--                <article-lable v-show="lableOrSort === '标签管理'"/>-->
-        <!--                <article-sort v-show="lableOrSort === '分类管理'"/>-->
-        <!--            </div>-->
-        <!--        </div>-->
-
         <el-tabs v-model="activeName" type="border-card">
-            <el-tab-pane v-for="item in tabMapOptions" :key="item.key" :label="item.label" :name="item.key" style="height:auto">
+            <el-tab-pane v-for="item in tabMapOptions" :key="item.key" :label="item.label" :name="item.key"
+                         style="height:auto">
                 <keep-alive>
                     <articleSort v-if="item.key === 'sort'"/>
-                    <article-lable v-else/>
+                    <article-lable v-if="item.key === 'lable'"/>
+                    <article-dic v-else/>
                 </keep-alive>
             </el-tab-pane>
         </el-tabs>
@@ -30,18 +16,21 @@
 <script>
     import articleSort from "./component/articleSort";
     import articleLable from "./component/articleLable";
+    import articleDic from "./component/articleDic";
 
     export default {
         name: "LableSort",
         components: {
             articleSort, //文章分类
             articleLable, //文章标签
+            articleDic, //数据字典管理
         },
         data() {
             return {
                 tabMapOptions: [
                     {label: '分类管理', key: 'sort'},
-                    {label: '标签管理', key: 'lable'}
+                    {label: '标签管理', key: 'lable'},
+                    {label: '数据字典', key: "dic"}
                 ],
                 activeName: 'sort'
             }
